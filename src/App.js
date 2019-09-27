@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
+import Form from './components/Form'
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messages: null
+    }
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:3000/messages')
+      .then(response => response.json())
+      .then((response) => this.setState({ messages: response }))
+  }
+
+  render() {
+    const { messages } = this.state;
+    return (
+      <div className="App">
+        <h1>Send Message</h1>
+        <Form />
+        <h1>Messages</h1>
+        {messages && messages.map((message) => (<div>{message.name}<br />{message.message}</div>))}
+      </div>
+    );
+  }
 }
 
 export default App;
