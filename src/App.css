@@ -20,3 +20,14 @@
 .App-link {
   color: #09d3ac;
 }
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  margin: 2em;
+}
+
+.message {
+  padding: 5px;
+}

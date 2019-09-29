@@ -1,4 +1,5 @@
 import React from 'react';
+import './style.css';
 
 class Form extends React.Component {
   constructor(props) {
@@ -10,17 +11,19 @@ class Form extends React.Component {
     this.setState({ name: event.target.value });
   };
 
-  handleSubmit = () => {
-    fetch('http://localhost:3000/messages', {
+  handleSubmit = event => {
+    const { messagePosted } = this.props;
+    event.preventDefault();
+    fetch('http://onnet.hopto.org/messages', {
       method: 'post',
       headers: {
         Accept: 'application/json, text/plain, */*',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(this.state)
-    })
-      .then(res => res.json())
-      .then(res => console.log(res));
+    }).then(() => {
+      messagePosted();
+    });
   };
 
   handleMessageChange = event => {
@@ -30,7 +33,7 @@ class Form extends React.Component {
   render() {
     const { message, value } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className="form-fields">
         <label htmlFor="name">
           Name:
           <input type="text" value={value} onChange={this.handleChange} />
@@ -43,7 +46,7 @@ class Form extends React.Component {
             onChange={this.handleMessageChange}
           />
         </label>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Submit" className="submit-button" />
       </form>
     );
   }

@@ -11,26 +11,34 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3000/messages')
+    this.fetchData();
+  }
+
+  messagePosted = () => {
+    this.fetchData();
+  };
+
+  fetchData = () => {
+    fetch('http://onnet.hopto.org/messages')
       .then(response => response.json())
       .then(response => this.setState({ messages: response }));
-  }
+  };
 
   render() {
     const { messages } = this.state;
     return (
       <div className="App">
         <h1>Send Message</h1>
-        <Form />
+        <Form messagePosted={this.messagePosted} />
         <h1>Messages</h1>
-        {messages &&
-          messages.map(message => (
-            <div key={message._id}>
-              {message.name}
-              <br />
-              {message.message}
-            </div>
-          ))}
+        <div className="messages">
+          {messages &&
+            messages.map(message => (
+              <div key={message._id} className="message">
+                <b>{message.name}</b>:{message.message}
+              </div>
+            ))}
+        </div>
       </div>
     );
   }
